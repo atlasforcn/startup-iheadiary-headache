@@ -1,5 +1,21 @@
 # iHeaDiary 智能頭痛管理 Demo
 
+## 快速看懂
+
+![startup-iheadiary-headache 功能截圖](docs/preview.png)
+
+- 線上 Demo：https://atlasforcn.github.io/startup-iheadiary-headache/
+- 這個原型在做什麼：把 iHeaDiary 做成頭痛日誌與誘因分析工具。
+- 特色定位：特色是把痛感量表、誘因、睡眠/壓力與就醫摘要整理成可帶去門診的資料。
+- 操作流程：新增頭痛紀錄與痛感量表 → 標記誘因、用藥、睡眠與壓力 → 查看趨勢圖、誘因排行與就醫摘要
+
+<details>
+<summary>展開完整功能流程截圖</summary>
+
+![startup-iheadiary-headache 完整功能流程截圖](docs/flow.png)
+
+</details>
+
 這是一個可直接用瀏覽器開啟的靜態概念原型，將「iHeaDiary 智能頭痛管理」延伸成頭痛日誌與誘因分析 App/儀表板。使用純 HTML、CSS、JavaScript 製作，無外部依賴，適合部署到 GitHub Pages。
 
 ## 比賽與來源資訊
