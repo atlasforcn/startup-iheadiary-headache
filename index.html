@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iHeaDiary 智能頭痛管理 | 頭痛日誌與誘因分析</title>
+    <meta
+      name="description"
+      content="iHeaDiary 智能頭痛管理靜態概念原型，提供頭痛日誌、誘因分析、趨勢圖、就醫摘要與提醒。"
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" aria-labelledby="app-title">
+        <div>
+          <p class="kicker">112 年（2023）第一梯次成功案例 · ICT · 國立中山大學</p>
+          <h1 id="app-title">iHeaDiary 智能頭痛管理</h1>
+          <p class="lead">把日常頭痛、誘因、用藥與生活狀態整理成可追蹤的私人健康筆記。</p>
+        </div>
+        <aside class="source-badge" aria-label="比賽來源">
+          <span>大專校院創新創業實戰模擬學習平臺</span>
+          <strong>iHeaDiary</strong>
+          <a href="https://ssp.moe.gov.tw/cases/544" target="_blank" rel="noreferrer">官方來源</a>
+        </aside>
+      </header>
+
+      <main>
+        <section class="notice" aria-labelledby="notice-title">
+          <div>
+            <h2 id="notice-title">非醫療診斷提醒</h2>
+            <p>本原型只協助整理個人紀錄與趨勢，不能取代醫師診斷。若出現突發劇烈頭痛、肢體無力、視力異常、發燒或外傷後頭痛，請立即就醫。</p>
+          </div>
+          <button class="ghost-button" type="button" id="reset-demo">載入範例資料</button>
+        </section>
+
+        <section class="workspace" aria-label="頭痛管理工作區">
+          <form class="entry-panel tool-panel" id="entry-form">
+            <div class="panel-heading">
+              <p class="eyebrow">今日紀錄</p>
+              <h2>新增頭痛日誌</h2>
+            </div>
+
+            <div class="form-grid compact">
+              <label>
+                日期
+                <input type="date" id="entry-date" required>
+              </label>
+              <label>
+                時間
+                <input type="time" id="entry-time" required>
+              </label>
+            </div>
+
+            <fieldset class="scale-field">
+              <legend>痛感量表</legend>
+              <div class="scale-readout">
+                <strong id="severity-value">5</strong>
+                <span id="severity-word">中度</span>
+              </div>
+              <input type="range" min="0" max="10" step="1" value="5" id="severity">
+              <div class="scale-labels" aria-hidden="true">
+                <span>0 無痛</span>
+                <span>10 劇烈</span>
+              </div>
+            </fieldset>
+
+            <div class="form-grid">
+              <label>
+                持續時間
+                <select id="duration">
+                  <option value="30">30 分鐘內</option>
+                  <option value="60">約 1 小時</option>
+                  <option value="180">1 至 3 小時</option>
+                  <option value="360">3 至 6 小時</option>
+                  <option value="720">超過 6 小時</option>
+                </select>
+              </label>
+              <label>
+                疼痛位置
+                <select id="location">
+                  <option>太陽穴</option>
+                  <option>前額</option>
+                  <option>後腦</option>
+                  <option>單側</option>
+                  <option>全頭</option>
+                  <option>眼窩周圍</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset>
+              <legend>可能誘因</legend>
+              <div class="tag-grid" id="trigger-tags"></div>
+            </fieldset>
+
+            <div class="form-grid">
+              <label>
+                用藥
+                <select id="medication">
+                  <option value="未用藥">未用藥</option>
+                  <option value="普拿疼/乙醯胺酚">普拿疼/乙醯胺酚</option>
+                  <option value="NSAID 止痛藥">NSAID 止痛藥</option>
+                  <option value="偏頭痛急性用藥">偏頭痛急性用藥</option>
+                  <option value="其他">其他</option>
+                </select>
+              </label>
+              <label>
+                睡眠時數
+                <input type="number" min="0" max="14" step="0.5" id="sleep" value="6.5">
+              </label>
+            </div>
+
+            <div class="slider-row">
+              <label for="stress">壓力</label>
+              <input type="range" min="1" max="5" step="1" value="3" id="stress">
+              <output id="stress-value" for="stress">3</output>
+            </div>
+
+            <div class="slider-row">
+              <label for="water">飲水</label>
+              <input type="range" min="0" max="3000" step="250" value="1500" id="water">
+              <output id="water-value" for="water">1500 ml</output>
+            </div>
+
+            <label>
+              備註
+              <textarea id="notes" rows="4" placeholder="例如：午餐後開始、畏光、想吐、休息後緩解"></textarea>
+            </label>
+
+            <div class="button-row">
+              <button class="primary-button" type="submit">儲存紀錄</button>
+              <button class="secondary-button" type="button" id="clear-form">清空</button>
+            </div>
+          </form>
+
+          <section class="dashboard-grid" aria-label="分析儀表板">
+            <div class="metric-strip" id="metrics"></div>
+
+            <section class="tool-panel chart-panel" aria-labelledby="trend-title">
+              <div class="panel-heading with-action">
+                <div>
+                  <p class="eyebrow">趨勢</p>
+                  <h2 id="trend-title">近期痛感走勢</h2>
+                </div>
+                <select id="range-filter" aria-label="分析期間">
+                  <option value="7">近 7 天</option>
+                  <option value="14">近 14 天</option>
+                  <option value="30" selected>近 30 天</option>
+                  <option value="90">近 90 天</option>
+                </select>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="trend-chart" width="760" height="260" aria-label="頭痛痛感趨勢圖"></canvas>
+              </div>
+            </section>
+
+            <section class="analysis-row">
+              <article class="tool-panel" aria-labelledby="trigger-title">
+                <div class="panel-heading">
+                  <p class="eyebrow">誘因</p>
+                  <h2 id="trigger-title">高頻標籤</h2>
+                </div>
+                <div class="bar-list" id="trigger-bars"></div>
+              </article>
+
+              <article class="tool-panel" aria-labelledby="rhythm-title">
+                <div class="panel-heading">
+                  <p class="eyebrow">生活狀態</p>
+                  <h2 id="rhythm-title">睡眠、壓力與用藥</h2>
+                </div>
+                <div class="rhythm-card" id="rhythm-card"></div>
+              </article>
+            </section>
+
+            <section class="analysis-row">
+              <article class="tool-panel" aria-labelledby="summary-title">
+                <div class="panel-heading with-action">
+                  <div>
+                    <p class="eyebrow">門診準備</p>
+                    <h2 id="summary-title">就醫摘要</h2>
+                  </div>
+                  <button class="small-button" type="button" id="copy-summary">複製</button>
+                </div>
+                <pre class="doctor-summary" id="doctor-summary"></pre>
+              </article>
+
+              <article class="tool-panel" aria-labelledby="reminder-title">
+                <div class="panel-heading">
+                  <p class="eyebrow">提醒</p>
+                  <h2 id="reminder-title">日常回訪</h2>
+                </div>
+                <div class="reminder-grid">
+                  <label>
+                    日誌提醒
+                    <input type="time" id="diary-reminder">
+                  </label>
+                  <label>
+                    補水提醒
+                    <select id="water-reminder">
+                      <option value="關閉">關閉</option>
+                      <option value="每 2 小時">每 2 小時</option>
+                      <option value="每 3 小時">每 3 小時</option>
+                      <option value="晚餐前">晚餐前</option>
+                    </select>
+                  </label>
+                </div>
+                <p class="reminder-copy" id="reminder-copy"></p>
+              </article>
+            </section>
+          </section>
+        </section>
+
+        <section class="history-section" aria-labelledby="history-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">紀錄庫</p>
+              <h2 id="history-title">最近日誌</h2>
+            </div>
+            <button class="danger-button" type="button" id="clear-data">清除所有紀錄</button>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </section>
+
+        <section class="source-section" aria-labelledby="source-title">
+          <div>
+            <p class="eyebrow">來源與聲明</p>
+            <h2 id="source-title">公開案例資訊</h2>
+          </div>
+          <dl>
+            <div><dt>比賽來源</dt><dd>大專校院創新創業實戰模擬學習平臺</dd></div>
+            <div><dt>年度</dt><dd>112 年（2023）</dd></div>
+            <div><dt>屆次/階段</dt><dd>第一梯次成功案例</dd></div>
+            <div><dt>團隊/公司</dt><dd>iHeaDiary</dd></div>
+            <div><dt>學校</dt><dd>國立中山大學</dd></div>
+            <div><dt>類別</dt><dd>ICT</dd></div>
+            <div><dt>作品名稱</dt><dd>iHeaDiary 智能頭痛管理</dd></div>
+            <div><dt>官方來源</dt><dd><a href="https://ssp.moe.gov.tw/cases/544" target="_blank" rel="noreferrer">https://ssp.moe.gov.tw/cases/544</a></dd></div>
+          </dl>
+          <p class="disclaimer">免責聲明：這是依公開得獎資訊與概念自行製作的興趣原型，不是原團隊官方 demo 或產品。</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
